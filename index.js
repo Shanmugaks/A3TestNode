@@ -4,10 +4,10 @@ var fs = require('fs');
 var path = require('path');
 
 exports.get = function(event, context, callback) {
-  var contents = fs.readFileSync(`public${path.sep}index.html`);
+  var contents = "This is Demo Application";
   var result = {
     statusCode: 200,
-    body: 'This is Demo Application',
+    body: contents,
     headers: {'content-type': 'text/html'}
   };
 
