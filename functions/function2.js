@@ -3,7 +3,7 @@
 var fs = require('fs');
 var path = require('path');
 
-exports.get = function(event, context, callback) {
+exports.handler = function(event, context, callback) {
   var contents = "This is function2 Lambda Demo";
   var result = {
     statusCode: 200,
