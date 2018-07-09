@@ -47,3 +47,11 @@ Resources:
           Properties:
             Path: /f2/
             Method: get
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - Function2
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Function2
+      Principal: apigateway.amazonaws.com
