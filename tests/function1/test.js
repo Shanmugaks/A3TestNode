@@ -3,7 +3,7 @@
 var test = require('unit.js');
 var function1 = require('../../functions/function1.js');
 
-describe('Tests function1', function() {
+describe('function1 - unit testing', function() {
   it('verifies successful response', function(done) {
     function1.handler({ /* event */ }, { /* context */ }, (err, result) => {
       try {
