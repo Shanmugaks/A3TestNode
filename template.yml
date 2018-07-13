@@ -115,3 +115,25 @@ Resources:
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  Function6:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: functions/function6.handler
+      Runtime: nodejs4.3
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /f6
+            Method: get
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - Function6
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Function6
+      Principal: apigateway.amazonaws.com
