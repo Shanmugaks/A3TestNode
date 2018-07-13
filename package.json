@@ -1,5 +1,5 @@
 {
-    "name": "AIDA sample project",
+    "name": "hello-world",
     "description": "Sample NodeJs web application",
     "version": "0.0.1",
     "private": true,
