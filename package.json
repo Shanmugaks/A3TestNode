@@ -10,7 +10,7 @@
     },
     "scripts": {
         "unit-test": "mocha --recursive tests//unitest",
-        "reg-test": "node .\\tests\\botest\\botest.js .\\tests\\botest\\data\\Order-flowers.json",
+        "reg-test": "node .//tests//botest//botest.js .//tests//botest//data//Order-flowers.json",
         "api-test": "echo No API test defined"
     }
 }
