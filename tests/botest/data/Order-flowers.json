@@ -1,0 +1,37 @@
+{
+	"name": "Orderflower-main",
+	"description": "Regression tests for the coffee bot",
+	"botName": "OrderFlowers",
+	"botAlias": "BETA",
+	"waitBetweenRequestsMillis": 0,
+	"sequences": [{
+		"name": "Order-Rose",
+		"description": "Order flower",
+		"sequence": [{
+				"utterance": "I would like to order some flowers",
+				"postConditions": {
+					"message": ["What type of flowers would you like to order\\?"]
+				}
+			},
+			{
+				"utterance": "Rose",
+				"postConditions": {
+					"message": ["What day do you want the Rose to be picked up\\?"]
+				}
+			},
+			{
+				"utterance": "today",
+				"postConditions": {
+					"message": ["Pick up the Rose at what time on 2018-07-12\\?"]
+				}
+			},
+			{
+				"utterance": "3 PM",
+				"postConditions": {
+					"message": ["Okay, your Rose will be ready for pickup by 15:00 on 2018-07-12.  Does this sound okay\\?"]
+				}
+			}
+
+		]
+	}]
+}

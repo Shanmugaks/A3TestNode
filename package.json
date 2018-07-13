@@ -5,9 +5,12 @@
     "private": true,
     "devDependencies": {
         "mocha": "5.0.0",
-        "unit.js": "2.0.0"
+        "unit.js": "2.0.0",
+        "aws-sdk": "^2.273.1"
     },
     "scripts": {
-        "test": "mocha --recursive tests"
+        "unit-test": "mocha --recursive tests\\unitest",
+        "reg-test": "node .\\tests\\botest\\botest.js .\\tests\\botest\\data\\Order-flowers.json",
+        "api-test":"echo No API test defined"
     }
 }
