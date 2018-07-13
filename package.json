@@ -1,5 +1,5 @@
 {
-    "name": "hello-world",
+    "name": "AIDA sample project",
     "description": "Sample NodeJs web application",
     "version": "0.0.1",
     "private": true,
@@ -9,8 +9,8 @@
         "aws-sdk": "^2.273.1"
     },
     "scripts": {
-        "unit-test": "mocha --recursive tests\\unitest",
+        "unit-test": "mocha --recursive tests//unitest",
         "reg-test": "node .\\tests\\botest\\botest.js .\\tests\\botest\\data\\Order-flowers.json",
-        "api-test":"echo No API test defined"
+        "api-test": "echo No API test defined"
     }
 }
