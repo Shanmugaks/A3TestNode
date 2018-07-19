@@ -1,23 +1,18 @@
 //During the test the env variable is set to test
-process.env.NODE_ENV = 'test';
-
-
-//Require the dev-dependencies
+//process.env.NODE_ENV = 'test';
+let axios = require('axios');
 let chai = require('chai');
-let chaiHttp = require('chai-http');
-let server = require('../server');
+const expect = chai.expect;
+chai.use(require('chai-json'));
 let should = chai.should();
-chai.use(chaiHttp);
 
-  describe('Get Google website', () => {
-      it('it should return google website', (done) => {
-        chai.request(server)
-            .get('https://www.google.com/')
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.any();                
-              done();
-            });
-      });
-  });
-
+describe('Get Google website', () => {
+    it('it should return google website', (done) => {
+          axios.get('https://reqres.in/api/users')
+          .then(function(response) {
+            expect(response.status).to.equal(200);       
+            expect(response.statusText).to.equal('OK');      
+            done();
+          });
+    });
+});

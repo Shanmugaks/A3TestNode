@@ -22,13 +22,13 @@
 			{
 				"utterance": "today",
 				"postConditions": {
-					"message": ["Pick up the Rose at what time on 2018-07-12\\?"]
+					"message": ["Pick up the Rose at what time on 2018-07-19\\?"]
 				}
 			},
 			{
 				"utterance": "3 PM",
 				"postConditions": {
-					"message": ["Okay, your Rose will be ready for pickup by 15:00 on 2018-07-12.  Does this sound okay\\?"]
+					"message": ["Okay, your Rose will be ready for pickup by 15:00 on 2018-07-19.  Does this sound okay\\?"]
 				}
 			}
 

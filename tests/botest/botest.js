@@ -45,6 +45,8 @@ const MAX_CONCURRENT_SEQUENCES = 10;
 AWS.config.region = 'us-west-2'; // Region
 let lexruntime = new AWS.LexRuntime();
 
+
+
 function recordFailure(botName, botAlias, sequence, params, lexResponse, requestId, message) {
 
 	const errorBlob = {
@@ -178,7 +180,7 @@ function checkResponseMessage(botName, botAlias, sequence, interaction, lexParam
 
 		if (lexResponse.message.match(postConditions.message[k])) {
 
-			console.log(`I  [${sequence.name}/${interaction.utterance}] Acceptable response found - ${lexResponse.message}`);
+			console.log(`[${sequence.name}/${interaction.utterance}] Acceptable response found - ${lexResponse.message}`);
 			acceptableResponse = true;
 		} else {
 			// console.error(`      [${postConditions.message[k]}] !~= [${lexResponse.message}]`);
@@ -227,6 +229,8 @@ function performInteraction(userId, botName, botAlias, waitBetweenRequestsMillis
 		sessionAttributes: {},
 		inputText: interaction.utterance
 	}
+
+
 
 	// console.log(`    Interaction ${interactionIndex + 1} / ${interactionCount} - ${(interaction.utterance)}`);
 	lexruntime.postText(params, function(err, data) {
@@ -301,7 +305,7 @@ function runSequence(testConfig, sequenceIndex) {
 	let sequence = testConfig.sequences[sequenceIndex];
 	let userId = (botName + '-' + (sequence.name ? sequence.name : '_') + '-' + ((new Date()).getTime()));
 
-	console.log(`I Test sequence ${(sequenceIndex + 1)} / ${sequenceCount} - ${sequence.name}`);
+	console.log(`BOT Test sequence ${(sequenceIndex + 1)} / ${sequenceCount} - ${sequence.name}`);
 	delayIfRequested(waitBetweenRequestsMillis, function() {
 
 		performInteraction(userId, botName, botAlias, waitBetweenRequestsMillis, sequence, 0);
@@ -326,6 +330,6 @@ if (process.argv.length != 3) {
 const testConfigFile = process.argv[2];
 let testConfig = JSON.parse(FS.readFileSync(testConfigFile));
 
-console.log(`I Running test cases from ${testConfigFile} for ${testConfig.botName}:${testConfig.botAlias} - ${(testConfig.name ? testConfig.name : '')}`);
+console.log(`Running BOT test cases from ${testConfigFile} for ${testConfig.botName}:${testConfig.botAlias} - ${(testConfig.name ? testConfig.name : '')}`);
 let sequenceTokensAvailable = MAX_CONCURRENT_SEQUENCES;
 runSequence(testConfig, 0);
