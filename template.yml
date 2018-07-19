@@ -1,142 +1,141 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Description: A sample application showing how to use Amazon DynamoDB Accelerator (DAX) with Lambda and CloudFormation.
-Transform: AWS::Serverless-2016-10-31
+AWSTemplateFormatVersion: 2010-09-09
+Transform:
 - AWS::Serverless-2016-10-31
 - AWS::CodeStar
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
 Parameters:
   ProjectId:
-    Description: AWS CodeStar projectID used to associate new resources to team members
     Type: String
-Resources:
-  siteFunction:
+    Description: AWS CodeStar projectID used to associate new resources to team members
+
+# Enable blue/green deployments using this Globals section. For instructions, see the AWS CodeStar User Guide:
+# https://docs.aws.amazon.com/codestar/latest/userguide/how-to-modify-serverless-project.html?icmpid=docs_acs_rm_tr
+#
+# Globals:
+#   Function:
+#     AutoPublishAlias: live
+#     DeploymentPreference:
+#       Enabled: true
+#       Type: Canary10Percent5Minutes
+
+Resources:  
+  Function1:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: geturl.zip
-      Description: Resolve/Store URLs
-      Environment:
-        Variables:
-          DAX_ENDPOINT: !GetAtt getUrlCluster.ClusterDiscoveryEndpoint
-          DDB_TABLE: !Ref getUrlTable
+      Handler: functions/function1.handler
+      Runtime: nodejs4.3
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Events:
-        getUrl:
+        GetEvent:
           Type: Api
           Properties:
+            Path: /f1
             Method: get
-            Path: /{id+}
-        postUrl:
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - Function1
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Function1
+      Principal: apigateway.amazonaws.com
+  Function2:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: functions/function2.handler
+      Runtime: nodejs4.3
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
           Type: Api
           Properties:
-            Method: post
-            Path: /
-      Handler: lambda/index.handler
-      Policies:
-          - AmazonDynamoDBFullAccess
-          - AWSLambdaVPCAccessExecutionRole
-      Runtime: nodejs6.10
-      Timeout: 10
-      VpcConfig:
-        SecurityGroupIds: 
-            - !GetAtt getUrlSecurityGroup.GroupId
-        SubnetIds:
-            - !Ref getUrlSubnet
-
-  getUrlTable:
-    Type: AWS::DynamoDB::Table
+            Path: /f2
+            Method: get
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - Function2
     Properties:
-      TableName: GetUrl-sample
-      AttributeDefinitions:
-        - 
-          AttributeName: id
-          AttributeType: S
-      KeySchema:
-        - 
-          AttributeName: id
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: 100
-        WriteCapacityUnits: 10
-  
-  getUrlCluster:
-    Type: AWS::DAX::Cluster
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Function2
+      Principal: apigateway.amazonaws.com
+  Function3:
+    Type: AWS::Serverless::Function
     Properties:
-      ClusterName: getUrl-sample
-      Description: Cluster for GetUrl Sample
-      IAMRoleARN: !GetAtt getUrlRole.Arn
-      NodeType: dax.t2.small
-      ReplicationFactor: 1
-      SecurityGroupIds:
-        - !GetAtt getUrlSecurityGroup.GroupId
-      SubnetGroupName: !Ref getUrlSubnetGroup
-
-  getUrlRole:
-    Type: AWS::IAM::Role
+      Handler: functions/function3.handler
+      Runtime: nodejs4.3
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /f3
+            Method: get
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - Function3
     Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-          - Action:
-            - sts:AssumeRole
-            Effect: Allow
-            Principal:
-              Service:
-              - dax.amazonaws.com
-        Version: '2012-10-17'
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-      RoleName: getUrl-sample-Role
-  
-  getUrlSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Function3
+      Principal: apigateway.amazonaws.com
+  Function4:
+    Type: AWS::Serverless::Function
     Properties:
-      GroupDescription: Security Group for GetUrl
-      GroupName: getUrl-sample
-      VpcId: !Ref getUrlVpc
-  
-  getUrlSecurityGroupIngress:
-    Type: AWS::EC2::SecurityGroupIngress
-    DependsOn: getUrlSecurityGroup
+      Handler: functions/function4.handler
+      Runtime: nodejs4.3
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /f4
+            Method: get
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - Function4
     Properties:
-      GroupId: !GetAtt getUrlSecurityGroup.GroupId
-      IpProtocol: tcp
-      FromPort: 8111
-      ToPort: 8111
-      SourceSecurityGroupId: !GetAtt getUrlSecurityGroup.GroupId
-  
-  getUrlVpc:
-    Type: AWS::EC2::VPC
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Function4
+      Principal: apigateway.amazonaws.com
+  Function5:
+    Type: AWS::Serverless::Function
     Properties:
-<<<<<<< HEAD
-      CidrBlock: 10.0.0.0/16
-      EnableDnsHostnames: true
-      EnableDnsSupport: true
-      InstanceTenancy: default
-      Tags:
-        - Key: Name
-          Value: getUrl-sample
-
-  getUrlSubnet:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone:
-        Fn::Select:
-          - 0
-          - Fn::GetAZs: ''
-      CidrBlock: 10.0.0.0/20
-      Tags:
-        - Key: Name
-          Value: getUrl-sample
-      VpcId: !Ref getUrlVpc
-  
-  getUrlSubnetGroup:
-    Type: AWS::DAX::SubnetGroup
-    Properties:
-      Description: Subnet group for GetUrl Sample
-      SubnetGroupName: getUrl-sample
-      SubnetIds: 
-        - !Ref getUrlSubnet
-=======
       Handler: functions/function5.handler
       Runtime: nodejs4.3
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
->>>>>>> parent of 14bcb69... func6 is added
+  Function6:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: functions/function6.handler
+      Runtime: nodejs4.3
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /f6
+            Method: get
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - Function6
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Function6
+      Principal: apigateway.amazonaws.com  
