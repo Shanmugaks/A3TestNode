@@ -1,6 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: A sample application showing how to use Amazon DynamoDB Accelerator (DAX) with Lambda and CloudFormation.
 Transform: AWS::Serverless-2016-10-31
+- AWS::Serverless-2016-10-31
+- AWS::CodeStar
 Resources:
   siteFunction:
     Type: AWS::Serverless::Function
