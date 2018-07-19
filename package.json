@@ -11,7 +11,8 @@
         "mocha-simple-html-reporter": "*",
         "mocha": "5.0.0",
         "unit.js": "2.0.0",
-        "aws-sdk": "^2.273.1"
+        "aws-sdk": "^2.273.1",
+        "amazon-dax-client": "^1.1.0",
     },
     "scripts": {
         "unit-test": "mocha --recursive tests//unitest --reporter mochawesome --reporter-options reportDir=tests//unitest//Report,reportFilename=UnitTestReport",
