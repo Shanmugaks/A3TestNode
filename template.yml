@@ -104,6 +104,7 @@ Resources:
   getUrlVpc:
     Type: AWS::EC2::VPC
     Properties:
+<<<<<<< HEAD
       CidrBlock: 10.0.0.0/16
       EnableDnsHostnames: true
       EnableDnsSupport: true
@@ -132,3 +133,10 @@ Resources:
       SubnetGroupName: getUrl-sample
       SubnetIds: 
         - !Ref getUrlSubnet
+=======
+      Handler: functions/function5.handler
+      Runtime: nodejs4.3
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+>>>>>>> parent of 14bcb69... func6 is added
