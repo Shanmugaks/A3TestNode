@@ -14,9 +14,9 @@
         "aws-sdk": "^2.273.1"
     },
     "scripts": {
-        "unit-test": "mocha --recursive tests\\unitest --reporter mochawesome --reporter-options reportDir=tests\\unitest\\Report,reportFilename=UnitTestReport",
+        "unit-test": "mocha --recursive tests//unitest --reporter mochawesome --reporter-options reportDir=tests//unitest//Report,reportFilename=UnitTestReport",
         "reg-test": "node .//tests//botest//botest.js .//tests//botest//data//Order-flowers.json",
-        "api-test": "mocha --recursive tests\\apitest --reporter mochawesome --reporter-options reportDir=tests\\apitest\\Report,reportFilename=ApiTestReport",
+        "api-test": "mocha --recursive tests//apitest --reporter mochawesome --reporter-options reportDir=tests//apitest//Report,reportFilename=ApiTestReport",
         "run-all-test":"unit-test && reg-test && api-test"
     },
     "dependencies": {
