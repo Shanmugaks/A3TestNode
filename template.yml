@@ -3,6 +3,10 @@ Description: A sample application showing how to use Amazon DynamoDB Accelerator
 Transform: AWS::Serverless-2016-10-31
 - AWS::Serverless-2016-10-31
 - AWS::CodeStar
+Parameters:
+  ProjectId:
+    Description: AWS CodeStar projectID used to associate new resources to team members
+    Type: String
 Resources:
   siteFunction:
     Type: AWS::Serverless::Function
