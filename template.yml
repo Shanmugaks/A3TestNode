@@ -137,24 +137,6 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !Ref Function6
       Principal: apigateway.amazonaws.com  
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:DescribeTable
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource: { "Fn::Join" : ["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":*:*"]] }
-    - Effect: Allow
-      Action:
-        - iot:AttachPrincipalPolicy
-        - iot:DetachPrincipalPolicy
-        - iot:CreatePolicy
-      Resource:
-        - "*"
   resources:
     Resources:
       UserTable:
