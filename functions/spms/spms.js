@@ -25,7 +25,7 @@ exports.handler = function (event, context, callback) {
   const NewUserData = {
     TableName: MytableName,
     Item: {
-      studentid,
+      Mystudentid,
       username: Myusername,
       createdAt: new Date().getTime(),
     },
