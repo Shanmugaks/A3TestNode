@@ -48,14 +48,14 @@ exports.handler = function (event, context, callback) {
       }));
     } else {
       console.log("Added New item:", JSON.stringify(data.Item, null, 2));
-      callback(null, response.success(data.Item));
+      callback(null, success(data.Item));
     }
   });
 
   dynamoDb.get(getStudentProfileQuery, function (err, data) {
     if (err) {
       console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-      callback(null, reponse.failure({
+      callback(null, failure({
         status: false,
         error: err
       }));
