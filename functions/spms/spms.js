@@ -48,7 +48,7 @@ exports.handler = function (event, context, callback) {
       }));
     } else {
       console.log("Added New item:", JSON.stringify(data.Item, null, 2));
-      callback(null, response.success(result.Item));
+      callback(null, response.success(data.Item));
     }
   });
 
@@ -61,7 +61,7 @@ exports.handler = function (event, context, callback) {
       }));
     } else {
       console.log("Read item which added just now:", JSON.stringify(data.Item, null, 2));
-      callback(null, response.success(result.Item));
+      callback(null, response.success(data.Item));
     }
   });
 };
