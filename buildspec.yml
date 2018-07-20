@@ -13,7 +13,7 @@ phases:
       # Run Unit test
       - npm run unit-test
       # Run Integration test
-      - npm run reg-test
+    #  - npm run reg-test
   build:
     commands:
       # Use AWS SAM to package the application by using AWS CloudFormation
