@@ -10,14 +10,17 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-var dynamodb = require('../supercommon/dynamodb.js');
 var response = require('../supercommon/response.js');
+var AWS = require('aws-sdk');
 
-exports.handler = async (event, context, callback) => {
+exports.handler = function (event, context, callback) {
   //const data = JSON.parse(event.body);
   const Myusername = 'shanmuga';
   const MytableName = 'studentsprofile';
   const Mystudentid = '123456';
+
+  const dynamoDb = new AWS.DynamoDB.DocumentClient();
+
 
   const NewUserData = {
     TableName: MytableName,
@@ -31,16 +34,34 @@ exports.handler = async (event, context, callback) => {
   const getStudentProfileQuery = {
     TableName: MytableName,
     Key: {
-        Mystudentid,
+      Mystudentid,
     },
   };
 
-  try {
-    await dynamodb.call('put', NewUserData);
-    const result = await dynamodb.call('get', getStudentProfileQuery);
-    callback(null, response.success(result.Item));
-  } catch (e) {
-    console.log(e);
-    callback(null, failure({ status: false, error: e }));
-  }
+
+  dynamoDb.put(NewUserData, function (err, data) {
+    if (err) {
+      console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      callback(null, reponse.failure({
+        status: false,
+        error: err
+      }));
+    } else {
+      console.log("Added item:", JSON.stringify(data, null, 2));
+      callback(null, response.success(result.Item));
+    }
+  });
+
+  dynamoDb.get(getStudentProfileQuery, function (err, data) {
+    if (err) {
+      console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      callback(null, reponse.failure({
+        status: false,
+        error: err
+      }));
+    } else {
+      console.log("Read item:", JSON.stringify(data.Item, null, 2));
+      callback(null, response.success(result.Item));
+    }
+  });
 };
