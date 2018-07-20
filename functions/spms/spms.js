@@ -34,8 +34,8 @@ exports.handler = function (event, context, callback) {
   const getStudentProfileQuery = {
     TableName: MytableName,
     Key: {
-      Mystudentid,
-    },
+      studentid: Mystudentid
+    }
   };
 
 
