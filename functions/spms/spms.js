@@ -48,6 +48,7 @@ exports.handler = function (event, context, callback) {
       }));
     } else {
       console.log("Added New item:", JSON.stringify(data.Item, null, 2));
+
       //callback(null, success(data.Item));
 
       dynamoDb.get(getStudentProfileQuery, function (err, data) {
