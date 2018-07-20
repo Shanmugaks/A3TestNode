@@ -17,7 +17,7 @@ exports.handler = function (event, context, callback) {
   //const data = JSON.parse(event.body);
   const Myusername = 'shanmuga';
   const MytableName = 'studentsprofile';
-  const Mystudentid = '123456';
+  const Mystudentid = 'SHA_123';
 
   const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -25,7 +25,7 @@ exports.handler = function (event, context, callback) {
   const NewUserData = {
     TableName: MytableName,
     Item: {
-      Mystudentid,
+      studentid: Mystudentid,
       username: Myusername,
       createdAt: new Date().getTime(),
     },
