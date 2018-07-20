@@ -19,6 +19,28 @@ Parameters:
 #       Type: Canary10Percent5Minutes
 
 Resources:  
+  spms:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: functions/spms/spms.handler
+      Runtime: nodejs4.3
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /spms
+            Method: get
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - spms
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref spms
+      Principal: apigateway.amazonaws.com
   Function1:
     Type: AWS::Serverless::Function
     Properties:

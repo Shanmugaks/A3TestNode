@@ -10,11 +10,12 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
+'use strict';
 
 import * as dynamodb from '../spms/supercommon/dynamodb';
 import { success, failure } from '../spms/supercommon/response';
 
-export const main = async (event, context, callback) => {
+exports.handler = async (event, context, callback) => {
   //const data = JSON.parse(event.body);
   const Myusername = 'shanmuga';
   const MytableName = 'studentsprofile';
