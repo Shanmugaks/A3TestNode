@@ -34,7 +34,7 @@ exports.handler = function (event, context, callback) {
   const getStudentProfileQuery = {
     TableName: MytableName,
     Key: {
-      studentid,
+      Mystudentid,
     },
   };
 
@@ -47,7 +47,7 @@ exports.handler = function (event, context, callback) {
         error: err
       }));
     } else {
-      console.log("Added item:", JSON.stringify(data, null, 2));
+      console.log("Added New item:", JSON.stringify(data.Item, null, 2));
       callback(null, response.success(result.Item));
     }
   });
@@ -60,7 +60,7 @@ exports.handler = function (event, context, callback) {
         error: err
       }));
     } else {
-      console.log("Read item:", JSON.stringify(data.Item, null, 2));
+      console.log("Read item which added just now:", JSON.stringify(data.Item, null, 2));
       callback(null, response.success(result.Item));
     }
   });
