@@ -11,11 +11,11 @@
   specific language governing permissions and limitations under the License.
 */
 
-import AWS from 'aws-sdk';
+var AWS = require('aws-sdk');
 
 //AWS.config.update({ region: process.env.AWS_REGION });
 
-export const call = (action, params) => {
+module.exports = call = (action, params) => {
   const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
   return dynamoDb[action](params).promise();

@@ -20,10 +20,10 @@ const buildResponse = (statusCode, body) => ({
   body: JSON.stringify(body),
 });
 
-export const success = body => buildResponse(200, body);
+module.exports = success = body => buildResponse(200, body);
 
-export const badRequest = body => buildResponse(400, body);
+module.exports = badRequest = body => buildResponse(400, body);
 
-export const notFound = body => buildResponse(404, body);
+module.exports =  notFound = body => buildResponse(404, body);
 
-export const failure = body => buildResponse(500, body);
+module.exports = failure = body => buildResponse(500, body);

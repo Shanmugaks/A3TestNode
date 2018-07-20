@@ -10,10 +10,8 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
   specific language governing permissions and limitations under the License.
 */
-'use strict';
-
-import * as dynamodb from '../spms/supercommon/dynamodb';
-import { success, failure } from '../spms/supercommon/response';
+var dynamodb = require('../supercommon/dynamodb.js');
+var response = require('../supercommon/response.js');
 
 exports.handler = async (event, context, callback) => {
   //const data = JSON.parse(event.body);
@@ -40,7 +38,7 @@ exports.handler = async (event, context, callback) => {
   try {
     await dynamodb.call('put', NewUserData);
     const result = await dynamodb.call('get', getStudentProfileQuery);
-    callback(null, success(result.Item));
+    callback(null, response.success(result.Item));
   } catch (e) {
     console.log(e);
     callback(null, failure({ status: false, error: e }));

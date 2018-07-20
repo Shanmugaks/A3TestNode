@@ -21,6 +21,7 @@
         "run-all-test": "unit-test && reg-test && api-test"
     },
     "dependencies": {
+        "esm": "^3.0.71",
         "npm": "^6.1.0"
     }
 }
