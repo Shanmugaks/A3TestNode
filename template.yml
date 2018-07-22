@@ -28,7 +28,7 @@ Resources:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Events:
-        GetEvent:
+        spmsGetStudentProfileApi:
           Type: Api
           Properties:
             Path: /spms/profiles/{studentid}
@@ -36,10 +36,10 @@ Resources:
   ConfigLambdaPermission:
     Type: "AWS::Lambda::Permission"
     DependsOn:
-    - spms_getStudentProfile
+    - spmsGetStudentProfile
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: !Ref spms_getStudentProfile
+      FunctionName: !Ref spmsGetStudentProfile
       Principal: apigateway.amazonaws.com    
   spmsCreateStudentProfile:
     Type: AWS::Serverless::Function
@@ -50,7 +50,7 @@ Resources:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Events:
-        GetEvent:
+        spmsCreateStudentProfileApi:
           Type: Api
           Properties:
             Path: /spms/profiles/{studentid}
@@ -58,10 +58,10 @@ Resources:
   ConfigLambdaPermission:
     Type: "AWS::Lambda::Permission"
     DependsOn:
-    - spms_createStudentProfile
+    - spmsCreateStudentProfile
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: !Ref spms_createStudentProfile
+      FunctionName: !Ref spmsCreateStudentProfile
       Principal: apigateway.amazonaws.com      
   spmsGetStudentsPersonalInfo:
     Type: AWS::Serverless::Function
@@ -72,7 +72,7 @@ Resources:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Events:
-        GetEvent:
+        spmsGetStudentsPersonalInfoApi:
           Type: Api
           Properties:
             Path: /spms/personainfo/{studentid}
@@ -80,10 +80,10 @@ Resources:
   ConfigLambdaPermission:
     Type: "AWS::Lambda::Permission"
     DependsOn:
-    - spms_getStudentsPersonalInfo
+    - spmsGetStudentsPersonalInfo
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: !Ref spms_getStudentsPersonalInfo
+      FunctionName: !Ref spmsGetStudentsPersonalInfo
       Principal: apigateway.amazonaws.com
   spmsCreateStudentsPersonalInfo:
     Type: AWS::Serverless::Function
@@ -94,7 +94,7 @@ Resources:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Events:
-        GetEvent:
+        spmsCreateStudentsPersonalInfoApi:
           Type: Api
           Properties:
             Path: /spms/personainfo/{studentid}
@@ -102,10 +102,10 @@ Resources:
   ConfigLambdaPermission:
     Type: "AWS::Lambda::Permission"
     DependsOn:
-    - spms_createStudentsPersonalInfo
+    - spmsCreateStudentsPersonalInfo
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: !Ref spms_createStudentsPersonalInfo
+      FunctionName: !Ref spmsCreateStudentsPersonalInfo
       Principal: apigateway.amazonaws.com   
   StudentProfileTable:
     Type: "AWS::DynamoDB::Table"
