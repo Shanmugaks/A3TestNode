@@ -19,10 +19,10 @@ Parameters:
 #       Type: Canary10Percent5Minutes
 
 Resources:  
-  spms:
+  spms_getStudentProfile:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: functions/spms/spms.handler
+      Handler: functions/spms/spms.getStudentProfile
       Runtime: nodejs4.3
       Role:
         Fn::ImportValue:
@@ -31,15 +31,81 @@ Resources:
         GetEvent:
           Type: Api
           Properties:
-            Path: /spms
+            Path: /spms/profiles/{studentid}
             Method: get
   ConfigLambdaPermission:
     Type: "AWS::Lambda::Permission"
     DependsOn:
-    - spms
+    - spms_getStudentProfile
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: !Ref spms
+      FunctionName: !Ref spms_getStudentProfile
+      Principal: apigateway.amazonaws.com
+  spms_createStudentProfile:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: functions/spms/spms.createStudentProfile
+      Runtime: nodejs4.3
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /spms/profiles/{studentid}
+            Method: post
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - spms_createStudentProfile
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref spms_createStudentProfile
+      Principal: apigateway.amazonaws.com
+  spms_getStudentsPersonalInfo:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: functions/spms/spms.getStudentsPersonalInfo
+      Runtime: nodejs4.3
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /spms/personainfo/{studentid}
+            Method: get
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - spms_getStudentsPersonalInfo
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref spms_getStudentsPersonalInfo
+      Principal: apigateway.amazonaws.com
+  spms_createStudentsPersonalInfo:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: functions/spms/spms.createStudentsPersonalInfo
+      Runtime: nodejs4.3
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /spms/personainfo/{studentid}
+            Method: post
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - spms_createStudentsPersonalInfo
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref spms_createStudentsPersonalInfo
       Principal: apigateway.amazonaws.com
   Function1:
     Type: AWS::Serverless::Function
@@ -117,7 +183,7 @@ Resources:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Events:
         GetEvent:
-          Type: Api
+          Type: Api+
           Properties:
             Path: /f4
             Method: get
@@ -163,6 +229,19 @@ Resources:
     Type: "AWS::DynamoDB::Table"
     Properties:
       TableName: "studentsprofile"
+      AttributeDefinitions:
+        - AttributeName: studentid
+          AttributeType: S
+      KeySchema:
+        - AttributeName: studentid
+          KeyType: HASH
+      ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+  UserTable:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      TableName: "studentspersonalinfo"
       AttributeDefinitions:
         - AttributeName: studentid
           AttributeType: S

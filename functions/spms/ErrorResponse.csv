@@ -1,0 +1,8 @@
+﻿Name,ErrorNo,Httpstatuscode,Description.
+InvalidStudentId,SPMS_000001,400,Invalid student ID.
+AuthenticationFailed,SPMS_000002,401,Authentication Failed.
+NotAuthorized,SPMS_000003,403,Not Authorized to Access SPMS.
+ResourceNotFound,SPMS_000004,404,Matching Resource not found in SPMS.
+InternalError,SPMS_000005,500,Internal error occurred in SEMS. Please try again.
+ServiceNotAvailable,SPMS_000006,503,Currently SPMS is unavailable. Please try again.
+

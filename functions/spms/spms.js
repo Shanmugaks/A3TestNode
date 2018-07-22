@@ -13,31 +13,89 @@
 var response = require('../supercommon/response.js');
 var AWS = require('aws-sdk');
 
-exports.handler = function (event, context, callback) {
-  //const data = JSON.parse(event.body);
-  const Myusername = 'shanmuga';
-  const MytableName = 'studentsprofile';
-  const Mystudentid = 'SHA_123';
+const TableName_studentsprofile = 'studentsprofile';
+const TableName_studentspersonalinfo = 'studentspersonalinfo';
+
+exports.getStudentProfile = function (event, context, callback) {
+  
+  if (event.pathParameters == null || event.pathParameters == undefined) 
+  {
+    // Throw error
+  }
+
+  console.log("\n Received Path params: " + event.pathParameters);
+
+  if(event.pathParameters.studentid == udefined || event.pathParameters.studentid == null)
+  {
+     // Throw error
+  }
+
+  let StudentIdForProfileToBeRetrieved = event.pathParameters.studentid; 
 
   const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
+  const getStudentProfileQuery = {
+    TableName: TableName_studentsprofile,
+    Key: {
+      studentid: StudentIdForProfileToBeRetrieved,
+    },
+  };
+
+  dynamoDb.get(getStudentProfileQuery, function (err, data) {
+    if (err) {
+      console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
+      callback(null, failure({
+        status: false,
+        error: err
+      }));
+    } else {
+      console.log("Read item which added just now:", JSON.stringify(data.Item, null, 2));
+      callback(null, success(data.Item));
+    }
+  }); 
+
+};
+
+exports.createStudentsProfile = function (event, context, callback) {
+
+  if (event.pathParameters == null || event.pathParameters == undefined) 
+  {
+    // Throw error
+  }
+
+  console.log("\n Received Path params: " + event.pathParameters);
+
+  if(event.pathParameters.studentid == udefined || event.pathParameters.studentid == null)
+  {
+     // Throw error
+  }
+
+  let StudentIdForProfileToBeCreated = event.pathParameters.studentid; 
+  
+  if (event.body == null || event.body == undefined) 
+  {
+     // Throw error
+  }
+    let bodycontent = JSON.parse(event.body);
+ 
+      
+     if (event.bodycontent == null || event.bodycontent == undefined) 
+  {
+     // Throw error
+  }
+
+  let studentsprofile = JSON.stringify(bodycontent.data);    
+
+  const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
   const NewUserData = {
-    TableName: MytableName,
+    TableName: TableName_studentsprofile,
     Item: {
-      studentid: Mystudentid,
-      username: Myusername,
+      studentid: StudentIdForProfileToBeCreated,
+      profile:  studentsprofile,
       createdAt: new Date().getTime(),
     },
   };
-
-  const getStudentProfileQuery = {
-    TableName: MytableName,
-    Key: {
-      studentid: Mystudentid,
-    },
-  };
-
 
   dynamoDb.put(NewUserData, function (err, data) {
     if (err) {
@@ -48,26 +106,102 @@ exports.handler = function (event, context, callback) {
       }));
     } else {
       console.log("Added New item:", JSON.stringify(data.Item, null, 2));
+      // Return 201
+    }    
+  });  
+};
 
-      //callback(null, success(data.Item));
-
-      dynamoDb.get(getStudentProfileQuery, function (err, data) {
-        if (err) {
-          console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
-          callback(null, failure({
-            status: false,
-            error: err
-          }));
-        } else {
-          console.log("Read item which added just now:", JSON.stringify(data.Item, null, 2));
-          callback(null, success(data.Item));
-        }
-      });
-
-
-
-    }
-  });
-
+exports.getStudentsPersonalInfo = function (event, context, callback) {
   
+  if (event.pathParameters == null || event.pathParameters == undefined) 
+  {
+    // Throw error
+  }
+
+  console.log("\n Received Path params: " + event.pathParameters);
+
+  if(event.pathParameters.studentid == udefined || event.pathParameters.studentid == null)
+  {
+     // Throw error
+  }
+
+  let StudentIdForPersonalInfoToBeRetrieved = event.pathParameters.studentid; 
+
+  const dynamoDb = new AWS.DynamoDB.DocumentClient();
+
+  const getStudentPersonalInfoQuery = {
+    TableName: TableName_studentspersonalinfo,
+    Key: {
+      studentid: StudentIdForPersonalInfoToBeRetrieved,
+    },
+  };
+
+  dynamoDb.get(getStudentPersonalInfoQuery, function (err, data) {
+    if (err) {
+      console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
+      callback(null, failure({
+        status: false,
+        error: err
+      }));
+    } else {
+      console.log("Read item which added just now:", JSON.stringify(data.Item, null, 2));
+      callback(null, success(data.Item));
+    }
+  }); 
+
+};
+
+exports.createStudentsPersonalInfo = function (event, context, callback) {
+
+  if (event.pathParameters == null || event.pathParameters == undefined) 
+  {
+    // Throw error
+  }
+
+  console.log("\n Received Path params: " + event.pathParameters);
+
+  if(event.pathParameters.studentid == udefined || event.pathParameters.studentid == null)
+  {
+     // Throw error
+  }
+
+  let StudentIdForPersonalInfoToBeCreated = event.pathParameters.studentid; 
+  
+  if (event.body == null || event.body == undefined) 
+  {
+     // Throw error
+  }
+    let bodycontent = JSON.parse(event.body);
+ 
+      
+     if (event.bodycontent == null || event.bodycontent == undefined) 
+  {
+     // Throw error
+  }
+
+  let studentspersonalInfo = JSON.stringify(bodycontent.data);   
+
+  const dynamoDb = new AWS.DynamoDB.DocumentClient();
+
+  const NewPersonalInfo = {
+    TableName: TableName_studentspersonalizeddata,
+    Item: {
+      studentid: StudentIdForPersonalInfoToBeCreated,
+      personalinfo:  studentspersonalInfo,
+      createdAt: new Date().getTime(),
+    },
+  };
+
+  dynamoDb.put(NewPersonalInfo, function (err, data) {
+    if (err) {
+      console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      callback(null, reponse.failure({
+        status: false,
+        error: err
+      }));
+    } else {
+      console.log("Added New item:", JSON.stringify(data.Item, null, 2));
+      // Return 201
+    }    
+  });  
 };
