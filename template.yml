@@ -107,7 +107,7 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !Ref spmsCreateStudentsPersonalInfo
       Principal: apigateway.amazonaws.com   
-  StudentProfileTable:
+  StudentProfilesTable:
     Type: "AWS::DynamoDB::Table"
     Properties:
       TableName: "studentsprofile"
@@ -120,7 +120,7 @@ Resources:
       ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
-  StudentPersonalInfoTable:
+  StudentPersonalInfosTable:
     Type: "AWS::DynamoDB::Table"
     Properties:
       TableName: "studentspersonalinfo"
