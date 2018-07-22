@@ -19,10 +19,10 @@ Parameters:
 #       Type: Canary10Percent5Minutes
 
 Resources:  
-  spms_getStudentProfile:
+  spmsGetStudentProfile:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: functions/spms/spms.getStudentProfile
+      Handler: functions/spms/getStudentProfile.handler
       Runtime: nodejs4.3
       Role:
         Fn::ImportValue:
@@ -40,11 +40,11 @@ Resources:
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Ref spms_getStudentProfile
-      Principal: apigateway.amazonaws.com
-  spms_createStudentProfile:
+      Principal: apigateway.amazonaws.com    
+  spmsCreateStudentProfile:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: functions/spms/spms.createStudentProfile
+      Handler: functions/spms/createStudentProfile.handler
       Runtime: nodejs4.3
       Role:
         Fn::ImportValue:
@@ -62,11 +62,11 @@ Resources:
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Ref spms_createStudentProfile
-      Principal: apigateway.amazonaws.com
-  spms_getStudentsPersonalInfo:
+      Principal: apigateway.amazonaws.com      
+  spmsGetStudentsPersonalInfo:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: functions/spms/spms.getStudentsPersonalInfo
+      Handler: functions/spms/getStudentsPersonalInfo.handler
       Runtime: nodejs4.3
       Role:
         Fn::ImportValue:
@@ -85,10 +85,10 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !Ref spms_getStudentsPersonalInfo
       Principal: apigateway.amazonaws.com
-  spms_createStudentsPersonalInfo:
+  spmsCreateStudentsPersonalInfo:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: functions/spms/spms.createStudentsPersonalInfo
+      Handler: functions/spms/createStudentsPersonalInfo.handler
       Runtime: nodejs4.3
       Role:
         Fn::ImportValue:
@@ -106,126 +106,8 @@ Resources:
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Ref spms_createStudentsPersonalInfo
-      Principal: apigateway.amazonaws.com
-  Function1:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: functions/function1.handler
-      Runtime: nodejs4.3
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /f1
-            Method: get
-  ConfigLambdaPermission:
-    Type: "AWS::Lambda::Permission"
-    DependsOn:
-    - Function1
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref Function1
-      Principal: apigateway.amazonaws.com
-  Function2:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: functions/function2.handler
-      Runtime: nodejs4.3
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /f2
-            Method: get
-  ConfigLambdaPermission:
-    Type: "AWS::Lambda::Permission"
-    DependsOn:
-    - Function2
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref Function2
-      Principal: apigateway.amazonaws.com
-  Function3:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: functions/function3.handler
-      Runtime: nodejs4.3
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /f3
-            Method: get
-  ConfigLambdaPermission:
-    Type: "AWS::Lambda::Permission"
-    DependsOn:
-    - Function3
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref Function3
-      Principal: apigateway.amazonaws.com
-  Function4:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: functions/function4.handler
-      Runtime: nodejs4.3
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-      Events:
-        GetEvent:
-          Type: Api+
-          Properties:
-            Path: /f4
-            Method: get
-  ConfigLambdaPermission:
-    Type: "AWS::Lambda::Permission"
-    DependsOn:
-    - Function4
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref Function4
-      Principal: apigateway.amazonaws.com
-  Function5:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: functions/function5.handler
-      Runtime: nodejs4.3
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-  Function6:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: functions/function6.handler
-      Runtime: nodejs4.3
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /f6
-            Method: get
-  ConfigLambdaPermission:
-    Type: "AWS::Lambda::Permission"
-    DependsOn:
-    - Function6
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref Function6
-      Principal: apigateway.amazonaws.com  
-  UserTable:
+      Principal: apigateway.amazonaws.com   
+  StudentProfileTable:
     Type: "AWS::DynamoDB::Table"
     Properties:
       TableName: "studentsprofile"
@@ -238,7 +120,7 @@ Resources:
       ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
-  UserTable:
+  StudentPersonalInfoTable:
     Type: "AWS::DynamoDB::Table"
     Properties:
       TableName: "studentspersonalinfo"
