@@ -41,10 +41,10 @@ Resources:
   ConfigLambdaPermission:
     Type: "AWS::Lambda::Permission"
     DependsOn:
-    - spmsGetStudentProfile
+    - spms
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: !Ref spmsGetStudentProfile
+      FunctionName: !Ref spms
       Principal: apigateway.amazonaws.com
   UserTable1:
     Type: "AWS::DynamoDB::Table"
