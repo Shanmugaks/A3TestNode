@@ -5,6 +5,16 @@ const TableName_studentspersonalinfo = 'studentspersonalinfo';
 
 exports.handler = function (event, context, callback) {
   
+    console.log("Invoked GET Personal Info");
+
+    var result = {
+      statusCode: 200,
+      body: 'Invoked  Get Personal Info',
+      headers: {'content-type': 'application/json'}
+    };
+  
+    callback(null, result);
+
     if (event.pathParameters == null || event.pathParameters == undefined) 
     {
       // Throw error

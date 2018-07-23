@@ -5,6 +5,17 @@ const TableName_studentsprofile = 'studentsprofile';
 
 exports.handler = function (event, context, callback) {
   
+  console.log("Invoked Get Profile");
+
+  var result = {
+    statusCode: 200,
+    body: 'Invoked  Get Profile',
+    headers: {'content-type': 'application/json'}
+  };
+
+  callback(null, result);
+    
+
   if (event.pathParameters == null || event.pathParameters == undefined) 
   {
     // Throw error

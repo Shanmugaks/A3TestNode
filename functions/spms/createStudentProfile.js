@@ -4,6 +4,16 @@ const TableName_studentsprofile = 'studentsprofile';
 
 exports.handler = function (event, context, callback) {
 
+    console.log("Invoked Create Profile");
+
+    var result = {
+      statusCode: 200,
+      body: 'Invoked Create Profile',
+      headers: {'content-type': 'application/json'}
+    };
+
+    callback(null, result);
+
     if (event.pathParameters == null || event.pathParameters == undefined) 
     {
       // Throw error
